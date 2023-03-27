@@ -1,5 +1,53 @@
 import { useState, useEffect } from 'react';
 
+async function getAnswer(prompt) {
+    const seguros = `
+    Dados los siguientes seguros de vida: 1. Seguros de vida devolucion: Protege la tranquilidad de tu familia en caso de fallecimiento y ahorra con nosotros. Nuestro Seguro de Vida permite ahorrar devolviéndote el 100% de lo pagado y hasta 100% más al final del período.
+
+Adquiérelo desde
+s/ 39 mensuales. 2. Inversion Flex: acompaña y se adapta a cada etapa de tu vida protegiendo tu tranquilidad y la de tu familia en caso de fallecimiento o invalidez. Crea un fondo de inversión con la mayor rentabilidad. Conoce más aquí.
+
+Adquiérelo desde
+s/ 180 mensuales. 3. Fondos: Asegura un ahorro destinado para la educación de tus hijos o para que cumplas tus sueños en vida. Disfruta de una tasa garantizada y cobertura en caso de fallecimiento e invalidez.
+
+Adquiérelo desde
+US$ 44 o s/ 150 mensuales. 4. Seguro vida inversion capital: Invierte en mercados internacionales el tiempo que tu decidas y elige hasta 2 fondos con inversiones de hasta US$ 350,000.  5. Seguro vida inversion base: Empieza a crear un fondo de inversión con rentabilidad mientras proteges la tranquilidad de tu familia.
+
+Adquiérelo desde
+US$ 21 mensuales. Soy una madre de dos hijos soltera, con ingresos mensuales de 1200 soles mensuales, me preocupa el futuro de mis hijos en caso de que me pase algo, mis hijos tienen 12 y 5 años
+    `;
+
+    const messages = [
+        { role: 'user', content: seguros },
+        { role: 'user', content: prompt },
+        { role: 'user', content: 'que seguro me conviene?' },
+    ];
+
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+            model: 'gpt-3.5-turbo',
+            messages: messages,
+            temperature: 0.7,
+            max_tokens: 1024,
+            n: 1,
+            stop: null,
+        }),
+    });
+
+    if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+    }
+
+    const data = await response.json();
+    const answer = data.choices[0].message.content;
+    return answer;
+}
+
 export default function ChatBox() {
     const [messages, setMessages] = useState([]);
 
@@ -32,21 +80,18 @@ export default function ChatBox() {
 
     let prompt = '';
 
-    const [chatAnswer, setChatAnswer] = useState('...');
-
-    const handleSubmit = async () => {
-        try {
-            const response = await fetch(
-                `http://localhost:4000/chat/?q=${encodeURIComponent(prompt)}`
-            );
-            const data = await response.json();
-            setChatAnswer(data.answer);
-            // set an alert to show the answer
-            alert(data.answer);
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    function submitPrompt() {
+        getAnswer(prompt).then((answer) => {
+            setMessages([
+                ...messages,
+                {
+                    sender: 'ChatBot',
+                    text: answer,
+                    time: new Date().toLocaleTimeString(),
+                },
+            ]);
+        });
+    }
 
     const answerQuestion = () => {
         let userMessages = messages.filter(
@@ -95,6 +140,7 @@ export default function ChatBox() {
                 break;
             case 4:
                 // add to prompt the second, third and fourth message of Cliente, excluding the ChatBot
+                submitPrompt();
                 let clienteMessages = messages.filter(
                     (message) => message.sender === 'Cliente'
                 );
@@ -105,18 +151,11 @@ export default function ChatBox() {
                     clienteMessages[2].text +
                     'preocupaciones y contexto: ' +
                     clienteMessages[3].text;
-                alert(prompt);
-                handleSubmit();
                 setMessages([
                     ...messages,
                     {
                         sender: 'ChatBot',
                         text: 'Gracias por tus respuestas, estoy buscando la mejor póliza para ti...',
-                        time: new Date().toLocaleTimeString(),
-                    },
-                    {
-                        sender: 'ChatBot',
-                        text: chatAnswer,
                         time: new Date().toLocaleTimeString(),
                     },
                 ]);
@@ -141,7 +180,7 @@ export default function ChatBox() {
                             className={`bg-white rounded-lg p-2 ${
                                 message.sender === 'Cliente'
                                     ? 'ml-2'
-                                    : 'mr-2 bg-blue-100'
+                                    : 'mr-2 bg-blue-200'
                             }`}
                         >
                             <div className="font-semibold">
