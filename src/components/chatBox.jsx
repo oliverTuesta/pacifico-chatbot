@@ -177,10 +177,10 @@ export default function ChatBox() {
                         }`}
                     >
                         <div
-                            className={`bg-white rounded-lg p-2 ${
+                            className={`rounded-lg p-2 ${
                                 message.sender === 'Cliente'
-                                    ? 'ml-2'
-                                    : 'mr-2 bg-blue-200'
+                                    ? 'ml-2 bg-blue-100'
+                                    : 'mr-2 bg-white'
                             }`}
                         >
                             <div className="font-semibold">
