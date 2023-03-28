@@ -4,20 +4,18 @@ async function getAnswer(prompt) {
     const segurosVida = `
     Dados los siguientes seguros de vida: -Seguros de vida devolucion: Protege la tranquilidad de tu familia en caso de fallecimiento y ahorra con nosotros. Nuestro Seguro de Vida permite ahorrar devolviéndote el 100% de lo pagado y hasta 100% más al final del período.
 
-Adquiérelo desde
-s/ 39 mensuales. -Inversion Flex: acompaña y se adapta a cada etapa de tu vida protegiendo tu tranquilidad y la de tu familia en caso de fallecimiento o invalidez. Crea un fondo de inversión con la mayor rentabilidad. Conoce más aquí.
+        Adquiérelo desde
+    s/ 39 mensuales. -Inversion Flex: acompaña y se adapta a cada etapa de tu vida protegiendo tu tranquilidad y la de tu familia en caso de fallecimiento o invalidez. Crea un fondo de inversión con la mayor rentabilidad. Conoce más aquí.
 
-Adquiérelo desde
-s/ 180 mensuales. -Fondos: Asegura un ahorro destinado para la educación de tus hijos o para que cumplas tus sueños en vida. Disfruta de una tasa garantizada y cobertura en caso de fallecimiento e invalidez.
+        Adquiérelo desde
+    s/ 180 mensuales. -Fondos: Asegura un ahorro destinado para la educación de tus hijos o para que cumplas tus sueños en vida. Disfruta de una tasa garantizada y cobertura en caso de fallecimiento e invalidez.
 
-Adquiérelo desde
-US$ 44 o s/ 150 mensuales. 4. Seguro vida inversion capital: Invierte en mercados internacionales el tiempo que tu decidas y elige hasta 2 fondos con inversiones de hasta US$ 350,000.  -Seguro vida inversion base: Empieza a crear un fondo de inversión con rentabilidad mientras proteges la tranquilidad de tu familia.
+        Adquiérelo desde
+    US$ 44 o s/ 150 mensuales. 4. Seguro vida inversion capital: Invierte en mercados internacionales el tiempo que tu decidas y elige hasta 2 fondos con inversiones de hasta US$ 350,000.  -Seguro vida inversion base: Empieza a crear un fondo de inversión con rentabilidad mientras proteges la tranquilidad de tu familia.
 
-Adquiérelo desde
-US$ 21 mensuales. Soy una madre de dos hijos soltera, con ingresos mensuales de 1200 soles mensuales, me preocupa el futuro de mis hijos en caso de que me pase algo, mis hijos tienen 12 y 5 años.
-    `;
-
-    const segurosSalud = `Seguros de Salud: 
+        Adquiérelo desde
+    US$ 21 mensuales. Soy una madre de dos hijos soltera, con ingresos mensuales de 1200 soles mensuales, me preocupa el futuro de mis hijos en caso de que me pase algo, mis hijos tienen 12 y 5 años.
+        Y los siguientes seguros de Salud disponibles: 
         - MINI: 
     Más de 230 clínicas nacionales y 5000 internacionales.
         US$ 4'000,000
@@ -57,14 +55,12 @@ US$ 21 mensuales. Soy una madre de dos hijos soltera, con ingresos mensuales de 
 
     const messages = [
         { role: 'user', content: segurosVida },
-        { role: 'user', content: segurosSalud },
+        { role: 'user', content: prompt },
         {
             role: 'user',
             content:
-                'en caso de que necesite mas informacion dime que tengo que ir al siguiente link: https://www.pacifico.com.pe',
+                'que seguro me conviene? y quiero que comiences tu respuesta con: Según los datos proporcionados puedo darte las siguientes recomendaciones. Y quiero que termines tu respuesta con la siguiente oracion: Para mayor información puedes visitar nuestro sitio web www.pacifico.com.pe/',
         },
-        { role: 'user', content: prompt },
-        { role: 'user', content: 'que seguro me conviene?' },
     ];
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -76,7 +72,7 @@ US$ 21 mensuales. Soy una madre de dos hijos soltera, con ingresos mensuales de 
         body: JSON.stringify({
             model: 'gpt-3.5-turbo',
             messages: messages,
-            temperature: 0.5,
+            temperature: 0.8,
             max_tokens: 1024,
             n: 1,
             stop: null,
@@ -177,7 +173,7 @@ export default function ChatBox() {
                     ...messages,
                     {
                         sender: 'ChatBot',
-                        text: '¿Cuál es tu nivel de ingresos?',
+                        text: '¿Podría proporcionarme información sobre su remuneración mensual?',
                         time: new Date().toLocaleTimeString(),
                     },
                 ]);
@@ -231,16 +227,18 @@ export default function ChatBox() {
                 prompt =
                     'Edad y genero: ' +
                     clienteMessages[1].text +
-                    'Sector de trabajo: ' +
+                    'Sector: ' +
                     clienteMessages[2].text +
-                    'propósito de adquirir el seguro (Por ejemplo, protección de ingresos, seguridad personal, seguro de salud, etc.): ' +
+                    'Remuneracion mensual: ' +
                     clienteMessages[3].text +
-                    'Presupuesto para el seguro: ' +
+                    'Propósito de adquirir el seguro: ' +
                     clienteMessages[4].text +
-                    'Enfermedad o padecimiento médico: ' +
+                    'Presupuesto: ' +
                     clienteMessages[5].text +
+                    'Enfermedad o padecimiento médico: ' +
+                    clienteMessages[6].text +
                     'Otra información: ' +
-                    clienteMessages[6].text;
+                    clienteMessages[7].text;
                 setMessages([
                     ...messages,
                     {
