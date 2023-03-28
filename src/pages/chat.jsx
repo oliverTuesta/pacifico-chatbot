@@ -8,7 +8,9 @@ export default function Chat() {
             <Head>
                 <title>Chat App</title>
             </Head>
-            <h1 className="mx-auto text-4xl font-bold mb-4">Chat</h1>
+            <h1 className="text-center text-3xl font-extrabold m-4">
+                ChatBot Pacifico Seguros
+            </h1>
             <ChatBox />
         </div>
     );
