@@ -8,12 +8,12 @@ export default function Home() {
                     <h1 className="text-6xl font-bold">
                         Bienvenido al ChatBot de{' '}
                         <a className="text-blue-600" href="https://nextjs.org">
-                            Pacifico Seguros
+                            Pac&iacute;fico Seguros
                         </a>
                     </h1>
 
                     <p className="mt-3 text-2xl">
-                        Pru&eacute;balo ahora{' '}
+                        Pru&eacute;balo{' '}
                         <Link
                             className="hover:underline text-blue-600"
                             href="/chat"
@@ -31,8 +31,8 @@ export default function Home() {
                                 ChatBot &rarr;
                             </h3>
                             <p className="mt-4 text-xl">
-                                Prueba el chatbot de Pacifico Seguros, el cual
-                                est&aacute; motorizado con Inteligencia
+                                Prueba el chatbot de Pac&iacute;fico Seguros, el
+                                cual est&aacute; motorizado con Inteligencia
                                 Artificial
                             </p>
                         </Link>
