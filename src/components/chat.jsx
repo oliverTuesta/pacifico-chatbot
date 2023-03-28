@@ -6,11 +6,8 @@ export default function Chat() {
     return (
         <div>
             <Head>
-                <title>ChatBot Pac&iacute;fico Seguros</title>
+                <title>Chat App</title>
             </Head>
-            <h1 className="text-center text-3xl font-extrabold m-4">
-                ChatBot Pac&iacute;fico Seguros
-            </h1>
             <ChatBox />
         </div>
     );

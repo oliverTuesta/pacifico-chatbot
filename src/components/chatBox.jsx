@@ -1,24 +1,68 @@
 import { useState, useEffect } from 'react';
 
 async function getAnswer(prompt) {
-    const seguros = `
-    Dados los siguientes seguros de vida: 1. Seguros de vida devolucion: Protege la tranquilidad de tu familia en caso de fallecimiento y ahorra con nosotros. Nuestro Seguro de Vida permite ahorrar devolviéndote el 100% de lo pagado y hasta 100% más al final del período.
+    const segurosVida = `
+    Dados los siguientes seguros de vida: -Seguros de vida devolucion: Protege la tranquilidad de tu familia en caso de fallecimiento y ahorra con nosotros. Nuestro Seguro de Vida permite ahorrar devolviéndote el 100% de lo pagado y hasta 100% más al final del período.
 
 Adquiérelo desde
-s/ 39 mensuales. 2. Inversion Flex: acompaña y se adapta a cada etapa de tu vida protegiendo tu tranquilidad y la de tu familia en caso de fallecimiento o invalidez. Crea un fondo de inversión con la mayor rentabilidad. Conoce más aquí.
+s/ 39 mensuales. -Inversion Flex: acompaña y se adapta a cada etapa de tu vida protegiendo tu tranquilidad y la de tu familia en caso de fallecimiento o invalidez. Crea un fondo de inversión con la mayor rentabilidad. Conoce más aquí.
 
 Adquiérelo desde
-s/ 180 mensuales. 3. Fondos: Asegura un ahorro destinado para la educación de tus hijos o para que cumplas tus sueños en vida. Disfruta de una tasa garantizada y cobertura en caso de fallecimiento e invalidez.
+s/ 180 mensuales. -Fondos: Asegura un ahorro destinado para la educación de tus hijos o para que cumplas tus sueños en vida. Disfruta de una tasa garantizada y cobertura en caso de fallecimiento e invalidez.
 
 Adquiérelo desde
-US$ 44 o s/ 150 mensuales. 4. Seguro vida inversion capital: Invierte en mercados internacionales el tiempo que tu decidas y elige hasta 2 fondos con inversiones de hasta US$ 350,000.  5. Seguro vida inversion base: Empieza a crear un fondo de inversión con rentabilidad mientras proteges la tranquilidad de tu familia.
+US$ 44 o s/ 150 mensuales. 4. Seguro vida inversion capital: Invierte en mercados internacionales el tiempo que tu decidas y elige hasta 2 fondos con inversiones de hasta US$ 350,000.  -Seguro vida inversion base: Empieza a crear un fondo de inversión con rentabilidad mientras proteges la tranquilidad de tu familia.
 
 Adquiérelo desde
-US$ 21 mensuales. Soy una madre de dos hijos soltera, con ingresos mensuales de 1200 soles mensuales, me preocupa el futuro de mis hijos en caso de que me pase algo, mis hijos tienen 12 y 5 años
+US$ 21 mensuales. Soy una madre de dos hijos soltera, con ingresos mensuales de 1200 soles mensuales, me preocupa el futuro de mis hijos en caso de que me pase algo, mis hijos tienen 12 y 5 años.
+    `;
+
+    const segurosSalud = `Seguros de Salud: 
+        - MINI: 
+    Más de 230 clínicas nacionales y 5000 internacionales.
+        US$ 4'000,000
+    Cobertura máxima anual
+    Atención médica internacional
+    Reembolso
+    Asistencia al viajero en emergencias
+    Plan Resguardo
+    Desde S/ 23.72 al día.
+
+        - Medicivida Nacional:
+    Más de 230 clínicas nacionales Red BANMÉDICA (Chile y Colombia).
+        S/ 9'600,000
+    Cobertura máxima anual
+    Reembolso
+    Asistencia al viajero en emergencias
+    Plan Resguardo
+    Desde S/ 10.11 al día
+
+        - Red Preferente:
+    Más de 220 clínicas nacionales.
+        S/ 5'000,000
+    Cobertura máxima anual
+    Asistencia al viajero en emergencias
+    Plan Resguardo
+    Desde S/ 7.09 al día
+
+        - Salud Esencial:
+    Más de 116 clínicas nacionales
+    S/ 1'000,000
+    Cobertura máxima anual
+    Chequeo preventivo virtual anual cubierto al 100%
+        Indemnización por Cáncer
+    Maternidad: Pago por parto
+    Desde S/ 4.75 al día
     `;
 
     const messages = [
-        { role: 'user', content: seguros },
+        { role: 'user', content: segurosVida },
+        { role: 'user', content: segurosSalud },
+        {
+            role: 'user',
+            content:
+                'en caso de que necesite mas informacion dime que tengo que ir al siguiente link: https://www.pacifico.com.pe',
+        },
         { role: 'user', content: prompt },
         { role: 'user', content: 'que seguro me conviene?' },
     ];
@@ -32,7 +76,7 @@ US$ 21 mensuales. Soy una madre de dos hijos soltera, con ingresos mensuales de 
         body: JSON.stringify({
             model: 'gpt-3.5-turbo',
             messages: messages,
-            temperature: 0.7,
+            temperature: 0.5,
             max_tokens: 1024,
             n: 1,
             stop: null,
@@ -113,7 +157,7 @@ export default function ChatBox() {
                     },
                     {
                         sender: 'ChatBot',
-                        text: 'Tienes hijos? Cuantos? y que edad tienen?',
+                        text: '¿Cuál es tu edad y género?',
                         time: new Date().toLocaleTimeString(),
                     },
                 ]);
@@ -123,7 +167,7 @@ export default function ChatBox() {
                     ...messages,
                     {
                         sender: 'ChatBot',
-                        text: 'En tu hogar, cuantos son los ingresos mensuales?',
+                        text: '¿En qué sector trabajas?',
                         time: new Date().toLocaleTimeString(),
                     },
                 ]);
@@ -133,29 +177,75 @@ export default function ChatBox() {
                     ...messages,
                     {
                         sender: 'ChatBot',
-                        text: 'Por ultimo, cuentame mas sobre ti y un poco sobre tus preocupaciones, ¿que te preocupa mas y por que? ¿como te gustaria que te ayudaramos?',
+                        text: '¿Cuál es tu nivel de ingresos?',
                         time: new Date().toLocaleTimeString(),
                     },
                 ]);
                 break;
             case 4:
+                setMessages([
+                    ...messages,
+                    {
+                        sender: 'ChatBot',
+                        text: '¿Cuál es el propósito de adquirir el seguro? (Por ejemplo, protección de ingresos, seguridad personal, seguro de salud, etc.)',
+                        time: new Date().toLocaleTimeString(),
+                    },
+                ]);
+                break;
+            case 5:
+                setMessages([
+                    ...messages,
+                    {
+                        sender: 'ChatBot',
+                        text: '¿Cuál es el presupuesto que tienes para el seguro?',
+                        time: new Date().toLocaleTimeString(),
+                    },
+                ]);
+                break;
+            case 6:
+                setMessages([
+                    ...messages,
+                    {
+                        sender: 'ChatBot',
+                        text: '¿Tienes alguna enfermedad o padecimiento médico?',
+                        time: new Date().toLocaleTimeString(),
+                    },
+                ]);
+                break;
+            case 7:
+                setMessages([
+                    ...messages,
+                    {
+                        sender: 'ChatBot',
+                        text: '¿Hay alguna otra información que nos pueda ayudar a determinar el mejor seguro para ti?',
+                        time: new Date().toLocaleTimeString(),
+                    },
+                ]);
+                break;
+            case 8:
                 // add to prompt the second, third and fourth message of Cliente, excluding the ChatBot
                 submitPrompt();
                 let clienteMessages = messages.filter(
                     (message) => message.sender === 'Cliente'
                 );
                 prompt =
-                    'hijos: ' +
+                    'Edad y genero: ' +
                     clienteMessages[1].text +
-                    'ingresos mensuales del hogar: ' +
+                    'Sector de trabajo: ' +
                     clienteMessages[2].text +
-                    'preocupaciones y contexto: ' +
-                    clienteMessages[3].text;
+                    'propósito de adquirir el seguro (Por ejemplo, protección de ingresos, seguridad personal, seguro de salud, etc.): ' +
+                    clienteMessages[3].text +
+                    'Presupuesto para el seguro: ' +
+                    clienteMessages[4].text +
+                    'Enfermedad o padecimiento médico: ' +
+                    clienteMessages[5].text +
+                    'Otra información: ' +
+                    clienteMessages[6].text;
                 setMessages([
                     ...messages,
                     {
                         sender: 'ChatBot',
-                        text: 'Gracias por tus respuestas, estoy buscando la mejor póliza para ti...',
+                        text: 'Gracias por tus respuestas, estamos buscando la mejor póliza para ti...',
                         time: new Date().toLocaleTimeString(),
                     },
                 ]);
@@ -165,8 +255,8 @@ export default function ChatBox() {
     };
 
     return (
-        <div className="max-w-3xl mx-auto mt-4">
-            <div className="bg-gray-100 p-4 rounded-lg">
+        <div className="max-w-3xl mx-auto mt-4 p-3">
+            <div className="bg-gray-100 p-4 rounded-lg min-h-1/2">
                 {messages.map((message, index) => (
                     <div
                         key={index}
@@ -198,7 +288,7 @@ export default function ChatBox() {
                 <input
                     className="border border-gray-300 p-2 rounded-lg w-full mt-4"
                     type="text"
-                    placeholder="Type a message"
+                    placeholder="Escribe un mensaje..."
                     value={newMessage}
                     onChange={handleNewMessage}
                 />
@@ -206,7 +296,7 @@ export default function ChatBox() {
                     className="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg mt-2"
                     type="submit"
                 >
-                    Send
+                    Enviar
                 </button>
             </form>
         </div>
