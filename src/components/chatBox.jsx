@@ -2,7 +2,12 @@ import { useState, useEffect } from 'react';
 
 async function getAnswer(prompt) {
     const segurosVida = `
-    Dados los siguientes seguros de vida: -Seguros de vida devolucion: Protege la tranquilidad de tu familia en caso de fallecimiento y ahorra con nosotros. Nuestro Seguro de Vida permite ahorrar devolviéndote el 100% de lo pagado y hasta 100% más al final del período.
+    Dados los siguientes seguros de vida:
+    - Seguro Vida FlexiFem Emprende
+Genera un ahorro para una futura inversión en tu emprendimiento, mientras protege a tu familia en caso de fallecimiento o invalidez.
+Adquierelo desde US$ 45 o S/140 mensuales
+
+        -Seguros de vida devolucion: Protege la tranquilidad de tu familia en caso de fallecimiento y ahorra con nosotros. Nuestro Seguro de Vida permite ahorrar devolviéndote el 100% de lo pagado y hasta 100% más al final del período.
 
         Adquiérelo desde
     s/ 39 mensuales. -Inversion Flex: acompaña y se adapta a cada etapa de tu vida protegiendo tu tranquilidad y la de tu familia en caso de fallecimiento o invalidez. Crea un fondo de inversión con la mayor rentabilidad. Conoce más aquí.
@@ -59,7 +64,7 @@ async function getAnswer(prompt) {
         {
             role: 'user',
             content:
-                'que seguro me conviene? y quiero que comiences tu respuesta con: Según los datos proporcionados puedo darte las siguientes recomendaciones. Y quiero que termines tu respuesta con la siguiente oracion: Para mayor información puedes visitar nuestro sitio web www.pacifico.com.pe/',
+                '¿Por que me recomendarias el seguro de vida FlexiFem Emprende?, ¿Qué otras alternativas consideras viables? y quiero que comiences tu respuesta con: Según los datos proporcionados puedo darte las siguientes recomendaciones. Y quiero que termines tu respuesta con la siguiente oracion: Para mayor información puedes visitar nuestro sitio web www.pacifico.com.pe/',
         },
     ];
 
